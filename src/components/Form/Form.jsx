@@ -8,16 +8,25 @@ function Form({setFullStatistics, fullStatistics, statisticItem, setStatisticIte
     event.preventDefault();
     
     if (statisticItem.hasOwnProperty('date') && statisticItem.hasOwnProperty('distance')) {
-      fullStatistics.length > 0 ? fullStatistics.map(item => {
-        console.log(item)
-        if (item.date === statisticItem.date) {
-          const currentStatistics = fullStatistics.filter(item => item.date !== statisticItem.date);
-          const currentDistance = Number(item.distance) + Number(statisticItem.distance);
-          setFullStatistics([...currentStatistics, { ...item, distance: currentDistance }]);
-        } else {
-          setFullStatistics(prevState => [...prevState, statisticItem]);
-        }
-      }) : setFullStatistics(prevState => [...prevState, statisticItem]);
+      const isStatisticExist = fullStatistics.some(item => (item.date === statisticItem.date));
+      
+      if (isStatisticExist) {
+        // Альтернативный вариант
+        // const currentFullStatistics = fullStatistics.filter(item => item.date !== statisticItem.date);
+        // const [ item ] = fullStatistics.filter(item => item.date === statisticItem.date);
+        // const currentDistance = Number(item.distance) + Number(statisticItem.distance);
+        // setFullStatistics([...currentFullStatistics, { ...item, distance: currentDistance }]);
+        const updateStatistics = fullStatistics.map(item => {
+          if (item.date === statisticItem.date) {
+            return {...item, distance: Number(item.distance) + Number(statisticItem.distance)};
+          }
+          return item;
+        });
+        
+        setFullStatistics([...updateStatistics]);
+      } else {
+        setFullStatistics(prevState => [...prevState, statisticItem]);
+      }
   
       setStatisticItem({
         date: '',
