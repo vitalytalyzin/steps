@@ -2,38 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from './Form.module.css';
 
-function Form({setFullStatistics, fullStatistics, statisticItem, setStatisticItem}) {
-  
-  const onSubmit = (event) => {
-    event.preventDefault();
-    
-    if (statisticItem.hasOwnProperty('date') && statisticItem.hasOwnProperty('distance')) {
-      const isStatisticExist = fullStatistics.some(item => (item.date === statisticItem.date));
-      
-      if (isStatisticExist) {
-        // Альтернативный вариант
-        // const currentFullStatistics = fullStatistics.filter(item => item.date !== statisticItem.date);
-        // const [ item ] = fullStatistics.filter(item => item.date === statisticItem.date);
-        // const currentDistance = Number(item.distance) + Number(statisticItem.distance);
-        // setFullStatistics([...currentFullStatistics, { ...item, distance: currentDistance }]);
-        const updateStatistics = fullStatistics.map(item => {
-          if (item.date === statisticItem.date) {
-            return {...item, distance: Number(item.distance) + Number(statisticItem.distance)};
-          }
-          return item;
-        });
-        
-        setFullStatistics([...updateStatistics]);
-      } else {
-        setFullStatistics(prevState => [...prevState, statisticItem]);
-      }
-  
-      setStatisticItem({
-        date: '',
-        distance: '',
-      });
-    }
-  };
+function Form({onSubmit, statisticItem, setStatisticItem}) {
   
   const onChange = ({ target }) => {
     const {name, value} = target;
@@ -68,10 +37,9 @@ function Form({setFullStatistics, fullStatistics, statisticItem, setStatisticIte
 }
 
 Form.propTypes = {
-  setFullStatistics: PropTypes.func.isRequired,
-  setStatisticItem: PropTypes.func.isRequired,
   statisticItem: PropTypes.object.isRequired,
-  fullStatistics: PropTypes.array.isRequired,
+  setStatisticItem: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default Form;

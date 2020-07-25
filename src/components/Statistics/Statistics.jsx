@@ -18,13 +18,43 @@ function Statistics() {
     removeStatisticItem(item);
   };
   
+  const onSubmit = (event) => {
+    event.preventDefault();
+    
+    if (statisticItem.hasOwnProperty('date') && statisticItem.hasOwnProperty('distance')) {
+      const isStatisticExist = fullStatistics.some(item => (item.date === statisticItem.date));
+      
+      if (isStatisticExist) {
+        // Альтернативный вариант
+        // const currentFullStatistics = fullStatistics.filter(item => item.date !== statisticItem.date);
+        // const [ item ] = fullStatistics.filter(item => item.date === statisticItem.date);
+        // const currentDistance = Number(item.distance) + Number(statisticItem.distance);
+        // setFullStatistics([...currentFullStatistics, { ...item, distance: currentDistance }]);
+        const updateStatistics = fullStatistics.map(item => {
+          if (item.date === statisticItem.date) {
+            return {...item, distance: Number(item.distance) + Number(statisticItem.distance)};
+          }
+          return item;
+        });
+        
+        setFullStatistics([...updateStatistics]);
+      } else {
+        setFullStatistics(prevState => [...prevState, statisticItem]);
+      }
+      
+      setStatisticItem({
+        date: '',
+        distance: '',
+      });
+    }
+  };
+  
   return (
     <>
       <Form
-        setFullStatistics={setFullStatistics}
-        fullStatistics={fullStatistics}
         statisticItem={statisticItem}
         setStatisticItem={setStatisticItem}
+        onSubmit={onSubmit}
       />
       <table className={styled.statistics__wrapper}>
         <thead>
