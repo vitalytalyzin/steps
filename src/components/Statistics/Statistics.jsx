@@ -21,7 +21,7 @@ function Statistics() {
   const onSubmit = (event) => {
     event.preventDefault();
     
-    if (statisticItem.hasOwnProperty('date') && statisticItem.hasOwnProperty('distance')) {
+    if (statisticItem.date !== '' && statisticItem.distance !== '') {
       const isStatisticExist = fullStatistics.some(item => (item.date === statisticItem.date));
       
       if (isStatisticExist) {
