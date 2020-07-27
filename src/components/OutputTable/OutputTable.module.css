@@ -1,9 +1,6 @@
 .statistics__wrapper {
-  margin-top: 48px;
-}
-
-table {
   width: 500px;
+  margin-top: 48px;
   table-layout: fixed;
   text-align: center;
 }
